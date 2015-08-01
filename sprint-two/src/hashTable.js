@@ -5,17 +5,17 @@ var HashTable = function(){
 
 HashTable.prototype.insert = function(k, v){
   var i = getIndexBelowMaxForKey(k, this._limit);
+  var bucket = [];
   var tuplet = [k, v];
-  if(this._storage[i] === undefined){
-    this._storage[i] = [];
-    this._storage[i].push(tuplet);
+  if(this._storage.get(i) === undefined) {
+    this._storage.set(i, bucket)
   }
-  this._storage[i].push(tuplet);
+  this._storage.get(i).push(tuplet);
 };
 
 HashTable.prototype.retrieve = function(k){
   var i = getIndexBelowMaxForKey(k, this._limit);
-  var bucket = this._storage[i];
+  var bucket = this._storage.get(i);
   var tuplet;
   _.each(bucket, function(item) {
     if(item[0] === k) {
@@ -26,51 +26,18 @@ HashTable.prototype.retrieve = function(k){
 };
 
 HashTable.prototype.remove = function(k){
-  debugger;
-  this._storage.each(function(bucket) {
-
-    if(bucket !== undefined) {
-      bucket.each(function(item) {
-        if(item !== undefined) {
-          if(item[0] === k) {
-            item[0] = null;
-            item[1] = null;
-            }
-         }
-      })
+  var i = getIndexBelowMaxForKey(k, this._limit);
+  var oldBucket = this._storage.get(i);
+  var bucket = _.filter(this._storage.get(i), function(item) {
+    if(item[0] !== k) {
+      return item;
     }
   })
+
+  this._storage.set(i, bucket);
+
 };
-
-
 
 /*
  * Complexity: What is the time complexity of the above functions?
  */
-/*var HashTable = function(){
-  this._limit = 8;
-  this._storage = LimitedArray(this._limit);
-};
-
-HashTable.prototype.insert = function(k, v){
-  var i = getIndexBelowMaxForKey(k, this._limit);
-  var tuplet = [k, v];
-  this._storage.set(i, tuplet);
-};
-
-HashTable.prototype.retrieve = function(k){
-  var i = getIndexBelowMaxForKey(k, this._limit);
-  var tuplet = this._storage.get(i);
-  return tuplet[1];
-};
-
-HashTable.prototype.remove = function(k){
-  this._storage.each(function(item) {
-    if(item !== undefined) {
-      if(item[0] === k) {
-        item[0] = null;
-        item[1] = null;
-      }
-    }
-  })
-}; */
