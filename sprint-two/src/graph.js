@@ -1,5 +1,3 @@
-
-
 var Graph = function(){
   this.nodes = [];
 };

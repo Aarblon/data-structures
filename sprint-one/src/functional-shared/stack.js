@@ -16,18 +16,15 @@ var Stack = function() {
 var stackMethods = {
 
   push: function(value) {
-      this.storage[this.count] = value;
-      //storage[someInstance[count]] = value;
-      this.count++;
-       },
+    this.storage[this.count] = value;
+    this.count++;
+  },
   pop: function() {
     this.count && this.count--;
-   var result = this.storage[this.count];
-    //var result = storage[count];
+    var result = this.storage[this.count];
     delete this.storage[this.count];
     return result;
   },
   size: function() {return this.count;}
 };
-
 
